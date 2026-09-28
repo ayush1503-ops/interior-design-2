@@ -1,0 +1,184 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --font-body: "Inter", -apple-system, "Segoe UI", sans-serif;
+
+  --color-ivory: #f3efe7;
+  --color-paper: #faf7f1;
+  --color-stone: #e6e0d3;
+  --color-ink: #16130e;
+  --color-soot: #211d16;
+  --color-fog: #8a8175;
+  --color-bronze: #8c6a4e;
+  --color-olive: #6a6353;
+
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  @apply bg-ivory text-ink font-body;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: #16130e;
+  color: #f3efe7;
+}
+
+:focus-visible {
+  outline: 1px solid #8c6a4e;
+  outline-offset: 3px;
+}
+
+/* ————— thin editorial scrollbar ————— */
+::-webkit-scrollbar {
+  width: 9px;
+}
+::-webkit-scrollbar-track {
+  background: #f3efe7;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(22, 19, 14, 0.22);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(22, 19, 14, 0.4);
+}
+
+/* ————— film grain ————— */
+.grain {
+  position: fixed;
+  inset: -50%;
+  z-index: 240;
+  pointer-events: none;
+  opacity: 0.055;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+/* ————— custom cursor ————— */
+html.has-cursor,
+html.has-cursor * {
+  cursor: none !important;
+}
+
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  border-radius: 9999px;
+  background: #ffffff;
+  mix-blend-mode: difference;
+  pointer-events: none;
+  z-index: 302;
+  transition: opacity 0.3s ease;
+}
+
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 30px;
+  height: 30px;
+  margin: -15px 0 0 -15px;
+  border-radius: 9999px;
+  border: 1px solid #ffffff;
+  mix-blend-mode: difference;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 301;
+  transition:
+    width 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    margin 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.cursor-ring[data-state="hover"] {
+  width: 52px;
+  height: 52px;
+  margin: -26px 0 0 -26px;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.cursor-ring[data-state="label"] {
+  width: 92px;
+  height: 92px;
+  margin: -46px 0 0 -46px;
+  background: #f3efe7;
+  border-color: transparent;
+  mix-blend-mode: normal;
+}
+
+.cursor-ring[data-state="label"] + .cursor-dot {
+  opacity: 0;
+}
+
+.cursor-label {
+  font-family: var(--font-body);
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.5;
+  color: #16130e;
+  opacity: 0;
+  transform: scale(0.75);
+  transition: opacity 0.25s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cursor-ring[data-state="label"] .cursor-label {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ————— animated editorial underline ————— */
+.link-line {
+  position: relative;
+}
+.link-line::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.link-line:hover::after,
+.link-line:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ————— image zoom used on project blocks ————— */
+.zoom-frame {
+  transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.zoom-frame:hover,
+.group:hover .zoom-frame {
+  transform: scale(1.018);
+}
